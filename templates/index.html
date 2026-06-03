@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>بوابة نتائج الطلاب | مدرسة باحثة البادية</title>
+  <link href="https://googleapis.com" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+    
+    body { 
+      margin: 0; 
+      padding: 0; 
+      min-height: 100vh; 
+      background: linear-gradient(rgba(212, 141, 61, 0.25), rgba(42, 82, 152, 0.45)), url('https://unsplash.com') no-repeat center center/cover; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      padding: 20px; 
+    }
+    
+    .container { 
+      background: rgba(255, 255, 255, 0.96); 
+      padding: 40px 35px 35px 35px; 
+      border-radius: 24px; 
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3); 
+      width: 100%; 
+      max-width: 600px; 
+      border: 2px solid #d48d3d; 
+      text-align: center;
+      position: relative; /* أساسي لوضع أيقونة الجمل في الجانب بدقة */
+    }
+
+    /* نقل أيقونة الجمل البدوية إلى أعلى اليسار بشكل احترافي وأنيق */
+    .camel-badge {
+      font-size: 24px;
+      background: linear-gradient(135deg, #cc7a23, #e6a45e);
+      width: 50px;
+      height: 50px;
+      line-height: 48px;
+      border-radius: 50%;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      box-shadow: 0 4px 10px rgba(204, 122, 35, 0.3);
+      border: 2px solid #fff;
+    }
+    
+    .logo-container img { 
+      width: 130px; 
+      height: 130px; 
+      object-fit: contain; 
+      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.15)); 
+      margin-bottom: 10px; 
+      border-radius: 50%;
+      border: 3px solid #d48d3d;
+      background: white;
+    }
+    
+    h2 { 
+      color: #8c531d; 
+      font-weight: 700; 
+      font-size: 24px; 
+      margin: 10px 0 5px 0; 
+      line-height: 1.5; 
+      border-bottom: 2px solid #ebd9c5;
+      padding-bottom: 15px;
+    }
+    
+    h4 { 
+      color: #b5651d; 
+      font-weight: 600; 
+      margin: 15px 0 25px 0; 
+      font-size: 15px; 
+      background: rgba(212, 141, 61, 0.12); 
+      padding: 6px 20px; 
+      border-radius: 30px; 
+      display: inline-block; 
+      border: 1px solid rgba(212, 141, 61, 0.2);
+    }
+    
+    .form-group { 
+      margin-bottom: 22px; 
+      text-align: right; 
+    }
+    
+    label { 
+      display: block; 
+      margin-bottom: 9px; 
+      color: #5c3a1a; 
+      font-weight: 700; 
+      font-size: 14px; 
+    }
+    
+    select, input[type=text] { 
+      width: 100%; 
+      padding: 14px; 
+      border: 2px solid #e0d5c1; 
+      border-radius: 12px; 
+      font-size: 15px; 
+      transition: all 0.3s ease; 
+      background: #fffdfb; 
+      text-align: right; 
+      color: #333;
+    }
+    
+    select:focus, input[type=text]:focus { 
+      border-color: #d48d3d; 
+      outline: none; 
+      box-shadow: 0 0 0 4px rgba(212, 141, 61, 0.25); 
+      background: #fff;
+    }
+    
+    input[type=submit] { 
+      width: 100%; 
+      padding: 15px; 
+      background: linear-gradient(135deg, #cc7a23, #e6a45e); 
+      color: white; 
+      border: none; 
+      border-radius: 12px; 
+      font-size: 17px; 
+      font-weight: 700; 
+      cursor: pointer; 
+      transition: all 0.3s ease; 
+      box-shadow: 0 6px 20px rgba(204, 122, 35, 0.4); 
+    }
+    
+    input[type=submit]:hover { 
+      background: linear-gradient(135deg, #b5651d, #cc7a23);
+      box-shadow: 0 8px 25px rgba(204, 122, 35, 0.5); 
+    }
+    
+    .error-msg { 
+      background: #ffe3e3; 
+      color: #d63031; 
+      padding: 12px; 
+      border-radius: 8px; 
+      font-weight: 600; 
+      margin-bottom: 20px; 
+      font-size: 14px; 
+      border-right: 4px solid #d63031; 
+      text-align: right; 
+    }
+    
+    .footer { 
+      margin-top: 30px; 
+      color: #6b523b; 
+      font-size: 13px; 
+      border-top: 1px solid #ebd9c5; 
+      padding-top: 15px; 
+      font-weight: 600; 
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- أيقونة الجمل الذكية في أعلى اليسار -->
+    <div class="camel-badge">🐪</div>
+
+    <div class="logo-container">
+      <img src="{{ url_for('static', filename='logo.png') }}" onerror="this.src='https://flaticon.com'" alt="شعار المدرسة">
+    </div>
+    <h2>مدرسة باحثة البادية الابتدائية بسوهاج</h2>
+    <h4>بوابة نتائج امتحانات الفصل الدراسي الأول 2026</h4>
+    
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+          <div class="error-msg">⚠️ {{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="/search">
+      <div class="form-group">
+        <label>اختر الصف الدراسي للطالب:</label>
+        <select name="cl" required>
+          <option value="">-- اضغط لتحديد الصف الدراسي --</option>
+          <option value="1">الصف الأول الابتدائي</option>
+          <option value="2">الصف الثاني الابتدائي</option>
+          <option value="3">الصف الثالث الابتدائي</option>
+          <option value="4">الصف الرابع الابتدائي</option>
+          <option value="5">الصف الخامس الابتدائي</option>
+          <option value="6">الصف السادس الابتدائي</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>الرقم القومي للطالب (14 رقم):</label>
+        <input type="text" name="rl" placeholder="أدخل الرقم القومي كاملاً بدون مسافات" required pattern="\d{14}" maxlength="14" autocomplete="off">
+      </div>
+      <input type="submit" value="عـرض النتيجـة البصريـة الملـونة 🔍">
+    </form>
+    <div class="footer">Developed by <b>Abdelrhman Elgammal 🐪</b> © 2026</div>
+  </div>
+</body>
+</html>

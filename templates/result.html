@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>بطاقة أداء الطالب الأكاديمية</title>
+  <link href="https://googleapis.com" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+    body { margin: 0; padding: 0; min-height: 100vh; background: linear-gradient(rgba(212, 141, 61, 0.25), rgba(42, 82, 152, 0.45)), url('https://unsplash.com') no-repeat center center/cover; padding: 30px 15px; display: flex; justify-content: center; }
+    .container { background: rgba(255, 255, 255, 0.96); padding: 35px; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.3); width: 100%; max-width: 750px; border: 2px solid #d48d3d; }
+    h2 { text-align: center; color: #8c531d; margin-bottom: 25px; font-weight: 700; font-size: 22px; border-bottom: 2px solid #ebd9c5; padding-bottom: 15px; }
+    .student-info { background: #fffdf9; padding: 20px; border-radius: 14px; margin-bottom: 25px; border: 1px solid #e0d5c1; }
+    .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; text-align: right; }
+    .info-item { font-size: 16px; color: #5c3a1a; }
+    .info-item strong { color: #8c531d; }
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+    th { background-color: #8c531d; color: white; padding: 14px; font-size: 16px; font-weight: 700; text-align: center; }
+    td { padding: 14px; border-bottom: 1px solid #ebd9c5; font-size: 16px; color: #333; text-align: center; }
+    tr:nth-child(even) { background-color: #fffdf9; }
+    .section-head { background-color: #f7ede2 !important; color: #8c531d; font-weight: 700; text-align: right; padding-right: 15px; font-size: 15px; }
+    .color-indicator { height: 28px; width: 100%; max-width: 200px; margin: 0 auto; border-radius: 20px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.15); border: 1px solid rgba(0,0,0,0.1); }
+    .status-badge { background: #fdf2e9; color: #c2410c; padding: 6px 20px; border-radius: 30px; font-weight: 700; font-size: 18px; display: inline-block; border: 1px solid #ffedd5; }
+    .back-btn { display: inline-block; padding: 12px 35px; background: #8c531d; color: white; text-decoration: none; border-radius: 10px; font-weight: 700; margin-top: 25px; transition: background 0.3s; text-align: center; }
+    .back-btn:hover { background: #6b3e14; }
+    .footer { text-align: center; color: #6b523b; font-size: 14px; margin-top: 30px; border-top: 1px solid #ebd9c5; padding-top: 15px; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h2>نتيجة الطالب الترم الثاني 2026 📋</h2>
+  
+  <div class="student-info">
+    <div class="info-grid">
+      <div class="info-item"><strong>اسم الطالب:</strong> <span>{{ student['student_name'] }}</span></div>
+      <div class="info-item"><strong>الصف الدراسي:</strong> الصف 
+        {% if student['grade_level'] == '1' %}الأول{% elif student['grade_level'] == '2' %}الثاني{% elif student['grade_level'] == '3' %}الثالث{% elif student['grade_level'] == '4' %}الرابع{% elif student['grade_level'] == '5' %}الخامس{% elif student['grade_level'] == '6' %}السادس{% endif %} الابتدائي
+      </div>
+      <div class="info-item"><strong>الرقم القومي:</strong> {{ student['national_id'] }}</div>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 50%; text-align: right; padding-right: 20px;">المادة الدراسية</th>
+        <th style="width: 50%;">مستوى تقييم الأداء الأدائي (اللون)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="2" class="section-head">📑 تقييم المواد الدراسية المقررة</td></tr>
+      
+      <!-- مادة اللغة العربية لكل الصفوف -->
+      <tr><td style="text-align: right; padding-right: 20px;">📘 اللغة العربية</td><td><div class="color-indicator" style="background-color: {{ colors['arabic'] }};"></div></td></tr>
+      
+      <!-- مادة اللغة الإنجليزية للصفوف 1، 2، 3 وباقي الصفوف -->
+      <tr><td style="text-align: right; padding-right: 20px;">🅴 اللغة الإنجليزية</td><td><div class="color-indicator" style="background-color: {{ colors['english'] }};"></div></td></tr>
+      
+      <!-- مادة الرياضيات لكل الصفوف -->
+      <tr><td style="text-align: right; padding-right: 20px;">🧮 الرياضيات</td><td><div class="color-indicator" style="background-color: {{ colors['math'] }};"></div></td></tr>
+      
+      <!-- مواد حصرية للصف الأول والثاني فقط -->
+      {% if student['grade_level'] in ['1', '2'] %}
+        <tr><td style="text-align: right; padding-right: 20px;">🧩 متعدد التخصصات (اكتشف)</td><td><div class="color-indicator" style="background-color: {{ colors['multidisciplinary'] }};"></div></td></tr>
+        <tr><td style="text-align: right; padding-right: 20px;">🏃 تربية بدنية وصحية</td><td><div class="color-indicator" style="background-color: {{ colors['physical_health'] }};"></div></td></tr>
+      {% endif %}
+
+      <!-- مواد حصرية للصفوف من الرابع إلى السادس -->
+      {% if student['grade_level'] in ['4', '5', '6'] %}
+        <tr><td style="text-align: right; padding-right: 20px;">🌍 الدراسات الاجتماعية</td><td><div class="color-indicator" style="background-color: {{ colors['studies'] }};"></div></td></tr>
+        <tr><td style="text-align: right; padding-right: 20px;">🔬 العلوم</td><td><div class="color-indicator" style="background-color: {{ colors['science'] }};"></div></td></tr>
+        <tr><td style="text-align: right; padding-right: 20px;">💻 تكنولوجيا المعلومات والاتصالات (ICT)</td><td><div class="color-indicator" style="background-color: {{ colors['ict'] }};"></div></td></tr>
+      {% endif %}
+      
+      <!-- مادة التربية الدينية لجميع الصفوف -->
+      <tr><td style="text-align: right; padding-right: 20px;">🕌 التربية الدينية</td><td><div class="color-indicator" style="background-color: {{ colors['religion'] }};"></div></td></tr>
+      
+      <!-- النتيجة النهائية لجميع الطلاب -->
+      <tr>
+        <td style="text-align: right; padding-right: 20px; font-weight: 700; background: #fdf2e9;">🏁 حالة الطالب النهائية:</td>
+        <td style="background: #fdf2e9;"><span class="status-badge">{{ student['status'] }}</span></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <div style="text-align: center;"><a href="/" class="back-btn">رجوع للرئيسية</a></div>
+  
+  <div class="footer">
+    <p><strong>مع تحيات مدير مدرسة باحثة البادية – أ. محمد أحمد عبداللطيف</strong></p>
+    <p style="font-size:12px; color:#8c531d; margin-top:5px;">Developed by Abdelrhman Elgammal🐪 © 2026 </p>
+  </div>
+</div>
+</body>
+</html>
